@@ -33,7 +33,7 @@
     
     let intervalId;
     
-    let streams;
+    let streams = [];
     let channels;
     
     let popup;
@@ -116,6 +116,49 @@
             chrome.browserAction.setBadgeText({"text": "?"});
         }
     }
+
+    let notify = function(streams){
+        //check if notifications are enabled
+        if ((localStorage.showNotifications === "true")) {
+            let name = "Twitch.tv"
+            if(streams.type == "mixer"){
+               name = "Mixer" 
+            }
+            let options = {
+                title : "Stream Live",
+                priority : 0,
+                iconUrl : chrome.runtime.getURL("images/notification-64x64.png")
+            };
+            
+            let i;
+            if (streams.length <= 5) {
+                options.type = "list";
+                options.message = "New "+name+" streams online!";
+                
+                let items = [];
+                let s;
+                for (i = 0; i < streams.length; i++) {
+                    s = streams[i];
+                    
+                    items.push({title: s.name, message: "is playing " + s.game});
+                }
+                
+                options.items = items;
+            } else {
+                options.type = "basic";
+                options.message = "New "+name+" streams online:\n";
+                
+                for (i = 0; i < streams.length; i++) {
+                    options.message += streams[i].name + ", ";
+                }
+                
+                //remove trailing comma
+                options.message = options.message.replace(/, +$/, "");
+            }
+            console.log(options);
+            chrome.notifications.create("", options, notificationCreationCallback);
+        }
+    }
     
     let notificationCreationCallback = function(notificationId) {
         notification = notificationId;
@@ -147,44 +190,7 @@
         //check if there are new streams
         let newStreamLen = nStreams.length;
         if (newStreamLen) {
-            
-            //check if notifications are enabled
-            if ((localStorage.showNotifications === "true")) {
-                
-                let options = {
-                    title : "Twitch Live",
-                    priority : 0,
-                    iconUrl : chrome.runtime.getURL("images/notification-64x64.png")
-                };
-                
-                let i;
-                if (newStreamLen <= 5) {
-                    options.type = "list";
-                    options.message = "New Twitch.tv streams online!";
-                    
-                    let items = [];
-                    let s;
-                    for (i = 0; i < newStreamLen; i++) {
-                        s = nStreams[i];
-                        
-                        items.push({title: s.name, message: "is playing " + s.game});
-                    }
-                    
-                    options.items = items;
-                } else {
-                    options.type = "basic";
-                    options.message = "New Twitch.tv streams online:\n";
-                    
-                    for (i = 0; i < newStreamLen; i++) {
-                        options.message += nStreams[i].name + ", ";
-                    }
-                    
-                    //remove trailing comma
-                    options.message = options.message.replace(/, +$/, "");
-                }
-                
-                chrome.notifications.create("", options, notificationCreationCallback);
-            }
+            notify(nStreams);
         }
         
         let len = getStreams().length;
@@ -375,6 +381,7 @@
     window.updateData = updateData;
     window.updateBadge = updateBadge;
     window.callApi = callApi;
+    window.notify = notify;
 
     init();
 }());

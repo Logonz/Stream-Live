@@ -38,7 +38,8 @@
     
     for (let index in follows){
       let channel_data = follows[index];
-      carina_module.subscribe('channel:'+channel_data.id+':update', channelUpdate);
+      let channelid = channel_data.id;
+      carina_module.subscribe('channel:'+channel_data.id+':update',(data) => {channelUpdate(channelid, data)});
       console.log('SUBSCRIBE: channel:'+channel_data.id+':update');
       channels[channel_data.id] = channel_data;
     }
@@ -46,20 +47,25 @@
     updateView();
   }
 
+  let convertMixerFormat = function(channel){
+    let stream = {};
+    stream._id = channel.id;
+    stream.game = channel.type.name;
+    stream.viewers = channel.viewersCurrent;
+    stream.name = channel.token;
+    stream.type = "mixer";
+    stream.channel = {}
+    stream.channel.name = channel.token;
+    stream.channel.status = channel.name;
+    stream.channel.url = "https://mixer.com/"+channel.token;
+    return stream;
+  }
+
   let getStreams = function(){
     let streams = []
     for (let channel_id in channels){
       if(channels[channel_id].online){
-        let stream = {};
-        stream._id = channels[channel_id].id;
-        stream.game = channels[channel_id].type.name;
-        stream.viewers = channels[channel_id].viewersCurrent;
-        stream.type = "mixer";
-        stream.channel = {}
-        stream.channel.name = channels[channel_id].token;
-        stream.channel.status = channels[channel_id].name;
-        stream.channel.url = "https://mixer.com/"+channels[channel_id].token;
-        streams.push(stream);
+        streams.push(convertMixerFormat(channels[channel_id]));
       }
     }
     console.log("Mixer getStreams: ", channels, " Streams: ", streams);
@@ -69,6 +75,9 @@
   let onlineStatusChanged = function(channel_id){
     console.log("Online status changed to: ", channels[channel_id].online);
     let len = background.getStreams().length;
+    let str = [];
+    str.push(convertMixerFormat(channel_id));
+    background.notify(str);
     updateView();
   }
 
@@ -80,23 +89,22 @@
     background.updateBadge(badgeText, badgeColor);
     
     if (background.popup) {
-        //broadcastError(null);
-        background.popup.updateView();
+      background.popup.updateView();
     }
   }
 
   let channelUpdate = function(channel_id, data){
-    console.log('channelUpdate', data);
+    //console.log('channelUpdate', channel_id, data);
     if(channels[channel_id]){
-      for(key in data){
-        console.log("ID: ", channel_id, "Data was: ", channels[channel_id][key], " Set to: ", data[key])
+      for(let key in data){
+        console.log("ID: ", channel_id, key+" was: ", channels[channel_id][key], " Set to: ", data[key])
         channels[channel_id][key] = data[key];
         if(key == "online"){
           onlineStatusChanged(channel_id);
         }
       }
     }
-    console.log(channels);
+    //console.log(channels);
   }
 
   let onStorageUpdate = function(e) {
