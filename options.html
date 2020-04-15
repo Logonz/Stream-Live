@@ -1,0 +1,129 @@
+<html>
+<!-- 
+	Copyright 2012
+	Mike Chambers
+	mikechambers@gmail.com
+	
+	http://www.mikechambers.com
+-->
+<head> 
+<title>Twitch Live - Options</title> 
+<style>
+body {
+  font-family:helvetica, arial, sans-serif;
+  font-size:80%;
+  margin:10px;
+}
+ 
+#header {
+  padding-bottom:1.5em;
+  padding-top:1.5em;
+}
+ 
+#header h1 {
+  font-size: 156%;
+  display:inline;
+  padding-bottom:43px;
+  padding-left:75px;
+  padding-top:40px;
+  background:url(images/icon-lg.png) no-repeat;
+  background-size:67px;
+  background-position:1px 18px;
+}
+ 
+#footer {
+  margin-left: 24px;
+  margin-top: 12px;
+}
+    
+#status {
+    opacity:0;
+    -webkit-transition:opacity 1s linear;
+    transition:opacity 1s linear;
+}
+ 
+.gc-settings-content {
+  margin: 6px 6px 0 6px;
+  padding: 10px 10px 10px 10px;
+  color: #333;
+  border: 1px solid #dedede;
+  -webkit-border-radius: 5px 5px;
+}
+ 
+.gc-settings-table {
+  width: 100%;
+  font-size: 1em;
+}
+ 
+.gc-settings-table .left,
+.gc-settings-table .right {
+  vertical-align: top;
+  border-bottom: 0 dotted #aaa;
+}
+ 
+.gc-settings-table th {
+  text-align: right;
+  width: 1%;
+  white-space: nowrap;
+  padding: 12px 24px 12px 12px;
+}
+ 
+.gc-settings-table td {
+  width: 99%;
+  white-space: nowrap;
+  padding: 12px;
+}
+ 
+</style>
+<script src="scripts/jquery-1.6.1.min.js"></script>
+</head> 
+<body> 
+ 
+<div id="header"><h1>Twitch Live Extension Options</h1></div> 
+ 
+<form name="optionsform"> 
+<div class="gc-settings-content"> 
+  <table class="gc-settings-table" id="gc-settings-voicemail-content"> 
+    <tr> 
+      <th class="left">Twitch TV Account Name</th> 
+      <td class="right"> 
+        <input type="text" id="twitchUsername" /> 
+      </td> 
+    </tr>
+    <tr> 
+      <th class="left">Mixer.com Account Name</th> 
+      <td class="right"> 
+        <input type="text" id="mixerUsername" /> 
+      </td> 
+    </tr>
+    <tr> 
+      <th class="left">Open Streams in Popout Window</th> 
+      <td class="right"> 
+        <input type="checkbox" id="openInPopoutCheck" />
+      </td> 
+    </tr>
+    <tr> 
+      <th class="left">Show Notifications When New Streams Go Live (Only works for twitch)</th> 
+      <td class="right"> 
+        <input type="checkbox" id="showNotificationsCheck" />
+      </td> 
+    </tr>
+    <tr> 
+      <th class="left">Do Not Display Vodcasts</th> 
+      <td class="right"> 
+        <input type="checkbox" id="ignoreVodcastsCheck" />
+      </td> 
+    </tr>
+  </table> 
+</div> 
+</form> 
+ 
+<div id="footer"> 
+  <button id="save-button" style="font-weight:bold">Save</button> 
+  <span id="status" style="margin-left: 10px; color: #0e5ecf; font-weight:bold;">Options Saved</span> 
+</div> 
+
+<script src="scripts/options.js"></script>
+
+</body> 
+</html>
