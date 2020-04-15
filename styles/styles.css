@@ -55,7 +55,7 @@ ul li:before {
 }
 
 .streamSectionTitle:hover {
-	cursor:pointer;
+	/*cursor:pointer;*/
 }
 
 #errorContainer {

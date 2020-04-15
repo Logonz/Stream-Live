@@ -176,7 +176,7 @@
                 }
                 let imgTag = "";
                 if(stream.type == "mixer"){
-                    imgTag = "<img height='16' width='16' style='margin-right:8px' src='https://mixer.com/_latest/assets/favicons/favicon-32x32.png'></img>"
+                    imgTag = "<img height='16' width='16' style='margin-right:6px' src='https://mixer.com/_latest/assets/favicons/favicon-32x32.png'></img>"
                 }
 
                 html += "<div title=\"" + channel.status.replace(/"/g, "&quot;") + "\" class='" + className + "' data-url='" + escape(channel.url) + "'>" +
@@ -193,7 +193,7 @@
         //$(".channelLink").bind("click", onChannelClick);
         $(".streamDiv").bind("click", onChannelClick);
 
-        $(".streamSectionTitle").bind("click", onGameTitleClick);
+        //$(".streamSectionTitle").bind("click", onGameTitleClick);
 
     }
 

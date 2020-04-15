@@ -366,7 +366,7 @@
         
         window.addEventListener("storage", onStorageUpdate);
         
-        chrome.contextMenus.create({"title": "About Twitch Live", "contexts":["browser_action"],
+        chrome.contextMenus.create({"title": "About Stream Live", "contexts":["browser_action"],
                                        "onclick": function(){
                                             chrome.tabs.create({"url": "about.html"});
                                        }});
