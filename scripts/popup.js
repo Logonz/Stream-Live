@@ -216,6 +216,7 @@
         $("#closeAnchor").bind("click", onCloseClick);
         $("#twitchAnchor").bind("click", onTwitchClick);
         $("#optionsAnchor").bind("click", onOptionsClick);
+        $("#optionsErrorDiv").bind("click", onOptionsClick);
 
 
         $("#closeAnchor").bind("mousedown", onRefreshDown);
